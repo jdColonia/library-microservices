@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "loans")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
