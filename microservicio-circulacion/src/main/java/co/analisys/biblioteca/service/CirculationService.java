@@ -1,5 +1,7 @@
 package co.analisys.biblioteca.service;
 
+import co.analisys.biblioteca.client.CatalogServiceClient;
+import co.analisys.biblioteca.client.NotificationServiceClient;
 import co.analisys.biblioteca.dto.NotificationDTO;
 import co.analisys.biblioteca.exception.BookNotAvailableException;
 import co.analisys.biblioteca.exception.LoanNotFoundException;
@@ -7,10 +9,7 @@ import co.analisys.biblioteca.model.*;
 import co.analisys.biblioteca.repository.LoanRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -20,12 +19,14 @@ public class CirculationService {
     private LoanRepository loanRepository;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private CatalogServiceClient catalogServiceClient;
+    
+    @Autowired
+    private NotificationServiceClient notificationServiceClient;
 
     @Transactional
     public void loanBook(UserId userId, BookId bookId) {
-        Boolean bookAvailable = restTemplate.getForObject(
-                "http://localhost:8082/books/" + bookId.getBookIdValue() + "/available", Boolean.class);
+        Boolean bookAvailable = catalogServiceClient.isBookAvailable(bookId.getBookIdValue());
 
         if (bookAvailable != null && bookAvailable) {
             Loan loan = new Loan(
@@ -38,19 +39,11 @@ public class CirculationService {
             );
             loanRepository.save(loan);
 
-            // Update availability
-            HttpEntity<Boolean> requestEntity = new HttpEntity<>(false);
-            restTemplate.exchange(
-                    "http://localhost:8082" + "/books/" + bookId.getBookIdValue() + "/availability",
-                    HttpMethod.PUT,
-                    requestEntity,
-                    Void.class
-            );
+            catalogServiceClient.updateBookAvailability(bookId.getBookIdValue(), false);
 
-            restTemplate.postForObject(
-                    "http://localhost:8084/notify",
-                    new NotificationDTO(userId.getUserIdValue(), "Book loaned: " + bookId.getBookIdValue()),
-                    Void.class);
+            notificationServiceClient.sendNotification(
+                new NotificationDTO(userId.getUserIdValue(), "Book loaned: " + bookId.getBookIdValue())
+            );
         } else {
             throw new BookNotAvailableException(bookId);
         }
@@ -64,12 +57,11 @@ public class CirculationService {
         loan.setStatus(LoanStatus.RETURNED);
         loanRepository.save(loan);
 
-        restTemplate.put("http://localhost:8082/books/" + loan.getBookId().getBookIdValue() + "/availability", true);
+        catalogServiceClient.updateBookAvailability(loan.getBookId().getBookIdValue(), true);
 
-        restTemplate.postForObject(
-                "http://localhost:8084/notify",
-                new NotificationDTO(loan.getUserId().getUserIdValue(), "Book returned: " + loan.getBookId().getBookIdValue()),
-                Void.class);
+        notificationServiceClient.sendNotification(
+            new NotificationDTO(loan.getUserId().getUserIdValue(), "Book returned: " + loan.getBookId().getBookIdValue())
+        );
     }
 
     public List<Loan> getAllLoans() {
