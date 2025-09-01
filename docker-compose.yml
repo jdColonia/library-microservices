@@ -1,0 +1,69 @@
+services:
+  user-service:
+    build:
+      context: .
+      dockerfile: ./microservicio-usuarios/Dockerfile
+    container_name: library-user-service
+    ports:
+      - '8081:8081'
+    networks:
+      - library-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8081/actuator/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  catalog-service:
+    build:
+      context: .
+      dockerfile: ./microservicio-catalogo/Dockerfile
+    container_name: library-catalog-service
+    ports:
+      - '8082:8082'
+    networks:
+      - library-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8082/actuator/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: ./microservicio-notificacion/Dockerfile
+    container_name: library-notification-service
+    ports:
+      - '8084:8084'
+    networks:
+      - library-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8084/actuator/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  circulation-service:
+    build:
+      context: .
+      dockerfile: ./microservicio-circulacion/Dockerfile
+    container_name: library-circulation-service
+    ports:
+      - '8083:8083'
+    networks:
+      - library-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8083/actuator/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  library-network:
+    driver: bridge
+    name: library-microservices-network
