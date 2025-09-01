@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Direccion {
-
-    private String calle;
-    private String ciudad;
-    private String codigoPostal;
-    // getters y setters
+public class Address {
+    private String street;
+    private String city;
+    private String postalCode;
 }

@@ -1,7 +1,7 @@
 package co.analisys.biblioteca;
 
 import co.analisys.biblioteca.model.*;
-import co.analisys.biblioteca.repository.UsuarioRepository;
+import co.analisys.biblioteca.repository.UserRepository;
 import jakarta.persistence.Embedded;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -9,25 +9,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DataLoader implements CommandLineRunner {
-
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        // Cargar datos de prueba
-        UsuarioId usuarioId = new UsuarioId("1");
+        // Load test data
+        UserId userId = new UserId("1");
         Email email = new Email("jrquintero@analisys.co");
-        Direccion direccion = new Direccion("Calle 123","Cali","123");
-        Credenciales credenciales = new Credenciales("jrquintero","password");
-        usuarioRepository.save(Usuario.builder()
-                .id(usuarioId)
-                .nombre("Jhon Robert Quintero")
+        Address address = new Address("123 Main Street","Cali","123");
+        Credentials credentials = new Credentials("jrquintero","password");
+        userRepository.save(User.builder()
+                .id(userId)
+                .name("John Robert Quintero")
                 .email(email)
-                .direccion(direccion)
-                .credenciales(credenciales)
+                .address(address)
+                .credentials(credentials)
                 .build());
 
-        System.out.println("Datos de prueba cargados exitosamente.");
+        System.out.println("Test data loaded successfully.");
     }
 }

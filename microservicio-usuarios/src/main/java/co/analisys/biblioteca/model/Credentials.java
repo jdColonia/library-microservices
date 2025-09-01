@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Credenciales {
-
+public class Credentials {
     private String username;
     private String passwordHash;
-    // métodos para verificar credenciales
 }
