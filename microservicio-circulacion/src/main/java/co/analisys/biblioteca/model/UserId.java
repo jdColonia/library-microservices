@@ -11,6 +11,6 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LibroId implements Serializable {
-    private String libroid_value;
+public class UserId implements Serializable {
+    private String userIdValue;
 }

@@ -10,10 +10,10 @@ import java.time.LocalDate;
 @Embeddable
 @Data
 @AllArgsConstructor
-public class FechaDevolucionPrevista {
-    private LocalDate fechadevolucionprevista_value;
+public class LoanDate {
+    private LocalDate loanDateValue;
 
-    public FechaDevolucionPrevista() {
-        this.fechadevolucionprevista_value = LocalDate.now().plusDays(14); // 2 semanas por defecto
+    public LoanDate() {
+        this.loanDateValue = LocalDate.now();
     }
 }

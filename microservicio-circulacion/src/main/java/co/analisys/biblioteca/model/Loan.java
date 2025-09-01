@@ -9,22 +9,22 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Prestamo {
+public class Loan {
     @EmbeddedId
-    private PrestamoId id;
+    private LoanId id;
 
     @Embedded
-    private UsuarioId usuarioId;
+    private UserId userId;
 
     @Embedded
-    private LibroId libroId;
+    private BookId bookId;
 
     @Embedded
-    private FechaPrestamo fechaPrestamo;
+    private LoanDate loanDate;
 
     @Embedded
-    private FechaDevolucionPrevista fechaDevolucionPrevista;
+    private ExpectedReturnDate expectedReturnDate;
 
     @Enumerated(EnumType.STRING)
-    private EstadoPrestamo estado;
+    private LoanStatus status;
 }

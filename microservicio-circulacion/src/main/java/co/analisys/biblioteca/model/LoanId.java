@@ -5,15 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.io.Serializable;
 
 @Embeddable
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class FechaPrestamo {
-    private LocalDate fechaprestamo_value;
-
-    public FechaPrestamo() {
-        this.fechaprestamo_value = LocalDate.now();
-    }
+public class LoanId implements Serializable {
+    private String loanIdValue;
 }
