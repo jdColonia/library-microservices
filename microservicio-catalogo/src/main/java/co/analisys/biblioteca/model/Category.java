@@ -1,6 +1,5 @@
 package co.analisys.biblioteca.model;
 
-
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Categoria {
-
-    private String nombre;
+public class Category {
+    private String name;
 }

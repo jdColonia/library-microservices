@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ISBN {
-
-    private String isbn_value;
+    private String isbnValue;
 }

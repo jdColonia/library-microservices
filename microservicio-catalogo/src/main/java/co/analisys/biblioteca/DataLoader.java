@@ -1,8 +1,8 @@
 package co.analisys.biblioteca;
 
 import co.analisys.biblioteca.model.*;
-import co.analisys.biblioteca.repository.AutorRepository;
-import co.analisys.biblioteca.repository.LibroRepository;
+import co.analisys.biblioteca.repository.AuthorRepository;
+import co.analisys.biblioteca.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -11,42 +11,41 @@ import java.util.Arrays;
 
 @Component
 public class DataLoader implements CommandLineRunner {
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
-    private LibroRepository libroRepository;
-
-    @Autowired
-    private AutorRepository autorRepository;
+    private AuthorRepository authorRepository;
 
     @Override
     public void run(String... args) throws Exception {
         // Create authors
-        Autor autor1 = new Autor(null, "Gabriel García Márquez");
-        Autor autor2 = new Autor(null, "George Orwell");
+        Author author1 = new Author(null, "Gabriel García Márquez");
+        Author author2 = new Author(null, "George Orwell");
 
         // Save authors to the database
-        autorRepository.saveAll(Arrays.asList(autor1, autor2));
+        authorRepository.saveAll(Arrays.asList(author1, author2));
 
         // Create books and associate them with the saved authors
-        Libro libro1 = new Libro();
-        libro1.setId(new LibroId("1"));
-        libro1.setTitulo("Cien años de soledad");
-        libro1.setIsbn(new ISBN("978-0307474728"));
-        libro1.setCategoria(new Categoria("Ficción"));
-        libro1.setDisponible(true);
-        libro1.setAutores(Arrays.asList(autor1));
+        Book book1 = new Book();
+        book1.setId(new BookId("1"));
+        book1.setTitle("One Hundred Years of Solitude");
+        book1.setIsbn(new ISBN("978-0307474728"));
+        book1.setCategory(new Category("Fiction"));
+        book1.setAvailable(true);
+        book1.setAuthors(Arrays.asList(author1));
 
-        Libro libro2 = new Libro();
-        libro2.setId(new LibroId("2"));
-        libro2.setTitulo("1984");
-        libro2.setIsbn(new ISBN("978-0451524935"));
-        libro2.setCategoria(new Categoria("Ciencia ficción"));
-        libro2.setDisponible(true);
-        libro2.setAutores(Arrays.asList(autor2));
+        Book book2 = new Book();
+        book2.setId(new BookId("2"));
+        book2.setTitle("1984");
+        book2.setIsbn(new ISBN("978-0451524935"));
+        book2.setCategory(new Category("Science Fiction"));
+        book2.setAvailable(true);
+        book2.setAuthors(Arrays.asList(author2));
 
         // Save books to the database
-        libroRepository.saveAll(Arrays.asList(libro1, libro2));
+        bookRepository.saveAll(Arrays.asList(book1, book2));
 
-        System.out.println("Datos de prueba cargados exitosamente.");
+        System.out.println("Test data loaded successfully.");
     }
 }
