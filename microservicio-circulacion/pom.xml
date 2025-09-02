@@ -16,6 +16,12 @@
 	<description>Library Circulation Management Microservice</description>
 
 	<dependencies>
+		<!-- Library Core Module for shared configurations -->
+		<dependency>
+			<groupId>co.analisys</groupId>
+			<artifactId>library-core</artifactId>
+		</dependency>
+		
 		<!-- Specific dependencies for circulation service can be added here -->
 		<!-- All common dependencies are inherited from parent -->
 	</dependencies>
