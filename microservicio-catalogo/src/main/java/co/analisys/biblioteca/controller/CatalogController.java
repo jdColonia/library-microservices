@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class CatalogController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN') or hasRole('ROLE_USER')")
     @Operation(
         summary = "Retrieve book by ID",
         description = "Fetches a book from the catalog using its unique identifier"
@@ -42,6 +44,7 @@ public class CatalogController {
     }
 
     @GetMapping("/{id}/available")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN') or hasRole('ROLE_USER')")
     @Operation(
         summary = "Check book availability",
         description = "Verifies if a specific book is currently available for loan"
@@ -60,6 +63,7 @@ public class CatalogController {
     }
 
     @PutMapping("/{id}/availability")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @Operation(
         summary = "Update book availability",
         description = "Updates the availability status of a book (used by circulation service)"
@@ -80,6 +84,7 @@ public class CatalogController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN') or hasRole('ROLE_USER')")
     @Operation(
         summary = "Search books in catalog",
         description = "Searches for books based on title, author, or other criteria"

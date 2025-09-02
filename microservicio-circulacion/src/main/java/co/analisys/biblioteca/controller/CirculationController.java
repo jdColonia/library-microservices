@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +24,15 @@ public class CirculationController {
     private CirculationService circulationService;
 
     @PostMapping("/loan")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @Operation(
         summary = "Loan a book to a user",
-        description = "Creates a new loan record if the book is available and sends notification"
+        description = "Creates a new loan record if the book is available and sends notification. Only librarians can process loans."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Book loaned successfully"),
         @ApiResponse(responseCode = "400", description = "Invalid user ID or book ID"),
+        @ApiResponse(responseCode = "403", description = "Access denied - librarian role required"),
         @ApiResponse(responseCode = "404", description = "Book not found or not available"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
@@ -43,13 +46,15 @@ public class CirculationController {
     }
 
     @PostMapping("/return")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN')")
     @Operation(
         summary = "Return a loaned book",
-        description = "Marks a loan as returned, updates book availability and sends notification"
+        description = "Marks a loan as returned, updates book availability and sends notification. Only librarians can process returns."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Book returned successfully"),
         @ApiResponse(responseCode = "400", description = "Invalid loan ID"),
+        @ApiResponse(responseCode = "403", description = "Access denied - librarian role required"),
         @ApiResponse(responseCode = "404", description = "Loan not found"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
@@ -61,9 +66,10 @@ public class CirculationController {
     }
 
     @GetMapping("/loans")
+    @PreAuthorize("hasRole('ROLE_LIBRARIAN') or hasRole('ROLE_USER')")
     @Operation(
         summary = "Retrieve all loans",
-        description = "Returns a list of all loan records in the system"
+        description = "Returns a list of loan records. Librarians can see all loans, users can see all loans for reference."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Loans retrieved successfully"),
