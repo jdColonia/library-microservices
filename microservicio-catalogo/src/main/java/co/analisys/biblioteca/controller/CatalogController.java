@@ -1,6 +1,5 @@
 package co.analisys.biblioteca.controller;
 
-import co.analisys.biblioteca.core.annotation.ApiDocumentation;
 import co.analisys.biblioteca.model.Book;
 import co.analisys.biblioteca.model.BookId;
 import co.analisys.biblioteca.service.CatalogService;

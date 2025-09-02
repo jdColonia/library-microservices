@@ -1,6 +1,5 @@
 package co.analisys.biblioteca.controller;
 
-import co.analisys.biblioteca.core.annotation.ApiDocumentation;
 import co.analisys.biblioteca.model.Email;
 import co.analisys.biblioteca.model.User;
 import co.analisys.biblioteca.model.UserId;
