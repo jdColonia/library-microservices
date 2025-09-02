@@ -4,11 +4,16 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy parent pom first
+# Copy parent pom
 COPY parent/pom.xml /app/parent/pom.xml
 
 # Install parent POM to local repository
 RUN cd /app/parent && mvn install -N
+
+# Copy and install library-core
+COPY microservicio-core/pom.xml /app/microservicio-core/pom.xml
+COPY microservicio-core/src /app/microservicio-core/src
+RUN cd /app/microservicio-core && mvn clean install -DskipTests
 
 # Copy service pom and source
 COPY microservicio-catalogo/pom.xml .
